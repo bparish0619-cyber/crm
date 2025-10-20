@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprehensive CRM Training Application: USCG vs. USAF</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation/dist/chartjs-plugin-annotation.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 400px;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none; appearance: none;
+            width: 20px; height: 20px;
+            border-radius: 50%; cursor: pointer;
+            background-color: #0d3b66;
+        }
+        .dark input[type="range"]::-webkit-slider-thumb {
+             background-color: #f9a03f;
+        }
+        input[type="range"]::-moz-range-thumb {
+            width: 20px; height: 20px;
+            border-radius: 50%; cursor: pointer;
+            background-color: #0d3b66;
+        }
+        .dark input[type="range"]::-moz-range-thumb {
+             background-color: #f9a03f;
+        }
+        blockquote {
+            border-left: 4px solid #f9a03f;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            font-style: italic;
+        }
+        .sticky-nav {
+            position: -webkit-sticky;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+        .rac-table td, .rac-table th {
+            border: 1px solid #e2e8f0;
+            padding: 0.5rem;
+            text-align: center;
+        }
+        .dark .rac-table td, .dark .rac-table th {
+             border-color: #4b5563;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300">
+
+    <div class="container mx-auto p-4 md:p-8">
+
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-[#0d3b66] dark:text-sky-300">Comprehensive CRM Training Application</h1>
+            <p class="text-lg md:text-xl text-gray-600 dark:text-gray-400 mt-2">An Elaborate Comparison of USCG & USAF Risk Management Models</p>
+        </header>
+        
+        <nav class="sticky-nav bg-white dark:bg-gray-800 shadow-md rounded-lg mb-12 p-2 flex flex-wrap justify-center items-center space-x-1 md:space-x-4">
+            <a href="#foundations" class="text-xs md:text-base py-2 px-3 md:px-4 font-semibold text-gray-700 dark:text-gray-300 hover:bg-slate-200 dark:hover:bg-gray-700 rounded-md transition">Foundations</a>
+            <a href="#uscg-deep-dive" class="text-xs md:text-base py-2 px-3 md:px-4 font-semibold text-gray-700 dark:text-gray-300 hover:bg-slate-200 dark:hover:bg-gray-700 rounded-md transition">USCG GAR 2.0</a>
+            <a href="#usaf-deep-dive" class="text-xs md:text-base py-2 px-3 md:px-4 font-semibold text-gray-700 dark:text-gray-300 hover:bg-slate-200 dark:hover:bg-gray-700 rounded-md transition">USAF AvORM</a>
+            <a href="#comparison" class="text-xs md:text-base py-2 px-3 md:px-4 font-semibold text-gray-700 dark:text-gray-300 hover:bg-slate-200 dark:hover:bg-gray-700 rounded-md transition">Comparison</a>
+            <a href="#scenario-lab" class="text-xs md:text-base py-2 px-3 md:px-4 font-semibold text-gray-700 dark:text-gray-300 hover:bg-slate-200 dark:hover:bg-gray-700 rounded-md transition">Scenario Lab</a>
+            <div class="pl-4">
+                <button id="theme-toggle" class="p-2 rounded-full text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700" type="button">
+                    <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                    <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.707.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+                </button>
+            </div>
+        </nav>
+
+        <main class="space-y-12">
+
+            <!-- Foundations Section -->
+            <section id="foundations" class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 md:p-8">
+                <h2 class="text-3xl font-bold text-[#0d3b66] dark:text-sky-300 mb-4 text-center border-b pb-4 dark:border-gray-600">Foundational Concepts: The "Why" Behind CRM</h2>
+                <p class="text-center text-gray-700 dark:text-gray-300 max-w-4xl mx-auto mb-6">At its core, military aviation is an inherently high-risk endeavor. Crew Resource Management (CRM) and Risk Management (RM) programs are not bureaucratic exercises; they are foundational safety systems designed to combat the primary cause of aviation mishaps: human error. These programs exist to provide crews with the skills, tools, and mindset necessary to manage risk, maximize mission effectiveness, and bring everyone home safely.</p>
+            </section>
+
+            <!-- USCG GAR 2.0 Deep Dive -->
+            <section id="uscg-deep-dive" class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 md:p-8">
+                <h2 class="text-3xl font-bold text-[#0d3b66] dark:text-sky-300 mb-4 text-center border-b pb-4 dark:border-gray-600">U.S. Coast Guard: The GAR 2.0 Process</h2>
+                <p class="text-center text-gray-700 dark:text-gray-300 max-w-4xl mx-auto mb-6">The USCG model is a structured, five-step process designed for universal application. It is built on analytical tools like the <b>Risk Assessment Matrix (RAM)</b> that inform the more tactical, pre-flight <b>General Assessment of Risk (GAR) 2.0</b> worksheet.</p>
+                
+                 <h3 class="text-2xl font-bold text-center text-[#1a5b8a] dark:text-sky-400 mt-10 mb-6">Defining "Warranted Risk": The Mission Connection</h3>
+                <p class="text-gray-700 dark:text-gray-300 mb-4">A core concept in Coast Guard aviation is that the level of acceptable risk is directly tied to the mission. The "Gain" in the GAR 2.0 model isn't subjective; it's defined by policy that outlines the warranted risk for specific activities.</p>
+                <blockquote class="dark:bg-gray-900 dark:text-gray-400">
+                    <p>"For all missions, potential risk to the aircraft and crew shall be weighed against risks to personnel and/or property if the mission is not undertaken... While all possible contingencies cannot be addressed, the following paragraphs establish policy guidelines to be used in making risk versus gain decisions for various aviation missions."</p>
+                    <footer class="text-sm text-right mt-2">— COMDTINST M3710.1I</footer>
+                </blockquote>
+                <div class="space-y-4 my-6">
+                    <div class="p-3 bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-lg"><b>Saving Human Life:</b> Warrants a maximum effort. Risk of damage to the aircraft is acceptable, even though such damage may be unrecoverable, as long as the probability of saving a life exists and probable loss of the aircrew is not an acceptable risk.</div>
+                    <div class="p-3 bg-yellow-50 dark:bg-yellow-900/20 border-l-4 border-yellow-500 rounded-r-lg"><b>Saving Property:</b> Warrants the risk of damage to the aircraft only if the value of the property is "unquestionably greater" than the cost of aircraft damage.</div>
+                    <div class="p-3 bg-green-50 dark:bg-green-900/20 border-l-4 border-green-500 rounded-r-lg"><b>Law Enforcement & Other Missions:</b> These missions (e.g., drug interdiction, marine environmental protection, logistics) do not warrant probable damage to or abuse of the aircraft. The risk should not exceed that of a routine flight.</div>
+                </div>
+
+                <h3 class="text-2xl font-bold text-center text-[#1a5b8a] dark:text-sky-400 mt-10 mb-6">The Analytical Foundation: Risk Assessment Matrix (RAM)</h3>
+                <p class="text-gray-700 dark:text-gray-300 mb-4">Before using the GAR 2.0 tool, it's crucial to understand the analytical process that underpins it. The RAM is used for deliberate, "what can go wrong" analysis. It assesses a hazard by determining its <b>Severity</b> and <b>Probability</b>.</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 my-6">
+                    <div>
+                        <h4 class="font-semibold text-lg text-center text-[#0d3b66] dark:text-sky-300 mb-2">Severity Codes</h4>
+                        <ul class="text-sm space-y-2">
+                           <li class="p-2 bg-slate-50 dark:bg-gray-700 rounded-lg"><b>I - Catastrophic:</b> Death, Loss of Asset, Mission Capability or Unit Readiness.</li>
+                           <li class="p-2 bg-slate-50 dark:bg-gray-700 rounded-lg"><b>II - Critical:</b> Permanent Disabling Injury or Damage, Significantly Degraded Mission Capability.</li>
+                           <li class="p-2 bg-slate-50 dark:bg-gray-700 rounded-lg"><b>III - Moderate:</b> Non-Permanent Disabling Injury or Damage, Degraded Mission Capability.</li>
+                           <li class="p-2 bg-slate-50 dark:bg-gray-700 rounded-lg"><b>IV - Negligible:</b> Minimal Injury or Damage, Little or No Impact to Mission.</li>
+                        </ul>
+                    </div>
+                     <div>
+                        <h4 class="font-semibold text-lg text-center text-[#0d3b66] dark:text-sky-300 mb-2">Probability Codes</h4>
+                         <ul class="text-sm space-y-2">
+                           <li class="p-2 bg-slate-50 dark:bg-gray-700 rounded-lg"><b>A - Almost Certain:</b> Continuously experienced.</li>
+                           <li class="p-2 bg-slate-50 dark:bg-gray-700 rounded-lg"><b>B - Likely:</b> Will occur frequently.</li>
+                           <li class="p-2 bg-slate-50 dark:bg-gray-700 rounded-lg"><b>C - Possible:</b> Will occur several times.</li>
+                           <li class="p-2 bg-slate-50 dark:bg-gray-700 rounded-lg"><b>D - Unlikely:</b> Remotely possible but not probable.</li>
+                           <li class="p-2 bg-slate-50 dark:bg-gray-700 rounded-lg"><b>E - Rare:</b> Improbable; but has occurred.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="overflow-x-auto my-6">
+                    <table class="w-full rac-table">
+                        <thead class="bg-slate-100 dark:bg-gray-700">
+                            <tr><th rowspan="2">Severity</th><th colspan="5">Probability (Likelihood of Mishap)</th></tr>
+                            <tr><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td class="font-semibold text-left">I - Catastrophic</td><td class="bg-red-500 text-white font-bold">1</td><td class="bg-red-500 text-white font-bold">1</td><td class="bg-red-500 text-white font-bold">1</td><td class="bg-orange-400 font-bold text-gray-900">2</td><td class="bg-yellow-400 font-bold text-gray-900">3</td></tr>
+                            <tr><td class="font-semibold text-left">II - Critical</td><td class="bg-red-500 text-white font-bold">1</td><td class="bg-red-500 text-white font-bold">1</td><td class="bg-orange-400 font-bold text-gray-900">2</td><td class="bg-yellow-400 font-bold text-gray-900">3</td><td class="bg-yellow-400 font-bold text-gray-900">3</td></tr>
+                            <tr><td class="font-semibold text-left">III - Moderate</td><td class="bg-orange-400 font-bold text-gray-900">2</td><td class="bg-orange-400 font-bold text-gray-900">2</td><td class="bg-yellow-400 font-bold text-gray-900">3</td><td class="bg-green-400 font-bold text-gray-900">4</td><td class="bg-green-400 font-bold text-gray-900">4</td></tr>
+                            <tr><td class="font-semibold text-left">IV - Negligible</td><td class="bg-yellow-400 font-bold text-gray-900">3</td><td class="bg-yellow-400 font-bold text-gray-900">3</td><td class="bg-green-400 font-bold text-gray-900">4</td><td class="bg-green-400 font-bold text-gray-900">4</td><td class="bg-green-400 font-bold text-gray-900">4</td></tr>
+                        </tbody>
+                        <tfoot class="bg-slate-800 text-white font-semibold">
+                            <tr><td colspan="6">Risk Assessment Codes (RAC): 1=Extremely High, 2=High, 3=Medium, 4=Low</td></tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+                <h3 class="text-2xl font-bold text-center text-[#1a5b8a] dark:text-sky-400 mt-10 mb-6">Interactive Tool: Hazard Assessment & Mitigation Worksheet</h3>
+                <p class="text-gray-700 dark:text-gray-300 mb-4">Use this tool to simulate the RAM process. Identify a hazard, assess the risk using the matrix, apply mitigations, and see how the risk code changes. This is the core of deliberate risk management.</p>
+                <div class="p-6 border rounded-lg bg-slate-50 dark:bg-gray-700/50 dark:border-gray-600">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div><label class="font-semibold">Task:</label><input id="hazard-task" type="text" class="w-full p-2 border rounded dark:bg-gray-800 dark:border-gray-600" value="Towing Sailboat"></div>
+                        <div><label class="font-semibold">What can go wrong?</label><input id="hazard-what-can-go-wrong" type="text" class="w-full p-2 border rounded dark:bg-gray-800 dark:border-gray-600" value="Tow line in screws"></div>
+                    </div>
+                    <div class="mt-4">
+                        <label class="font-semibold">Why? (Initial Hazard):</label>
+                        <input id="hazard-why" type="text" class="w-full p-2 border rounded dark:bg-gray-800 dark:border-gray-600" value="Too much slack in line">
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4 items-end">
+                        <div>
+                            <label class="font-semibold">Initial Severity:</label>
+                            <select id="initial-severity" class="w-full p-2 border rounded dark:bg-gray-800 dark:border-gray-600">
+                                <option value="2">III - Moderate</option><option value="0">I - Catastrophic</option><option value="1">II - Critical</option><option value="3">IV - Negligible</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="font-semibold">Initial Probability:</label>
+                            <select id="initial-probability" class="w-full p-2 border rounded dark:bg-gray-800 dark:border-gray-600">
+                                <option value="2">C - Possible</option><option value="0">A - Almost Certain</option><option value="1">B - Likely</option><option value="3">D - Unlikely</option><option value="4">E - Rare</option>
+                            </select>
+                        </div>
+                        <div class="text-center p-2 bg-white dark:bg-gray-800 rounded border dark:border-gray-600 h-full flex items-center justify-center"><p class="font-semibold">Initial RAC: <span id="initial-rac" class="text-2xl font-bold">--</span></p></div>
+                    </div>
+                    <div class="mt-4">
+                        <label class="font-semibold">Mitigations (Controls):</label>
+                        <textarea id="hazard-mitigations" class="w-full p-2 border rounded dark:bg-gray-800 dark:border-gray-600" rows="2">Monitor line tension&#10;Maintain speed and heading</textarea>
+                    </div>
+                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4 items-end">
+                        <div>
+                            <label class="font-semibold">Mitigated Severity:</label>
+                            <select id="mitigated-severity" class="w-full p-2 border rounded dark:bg-gray-800 dark:border-gray-600">
+                                <option value="2">III - Moderate</option><option value="0">I - Catastrophic</option><option value="1">II - Critical</option><option value="3">IV - Negligible</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="font-semibold">Mitigated Probability:</label>
+                            <select id="mitigated-probability" class="w-full p-2 border rounded dark:bg-gray-800 dark:border-gray-600">
+                                <option value="3">D - Unlikely</option><option value="0">A - Almost Certain</option><option value="1">B - Likely</option><option value="2">C - Possible</option><option value="4">E - Rare</option>
+                            </select>
+                        </div>
+                        <div class="text-center p-2 bg-white dark:bg-gray-800 rounded border dark:border-gray-600 h-full flex items-center justify-center"><p class="font-semibold">Mitigated RAC: <span id="mitigated-rac" class="text-2xl font-bold">--</span></p></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- USAF AvORM Deep Dive -->
+            <section id="usaf-deep-dive" class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 md:p-8">
+                <h2 class="text-3xl font-bold text-[#0d3b66] dark:text-sky-300 mb-4 text-center border-b pb-4 dark:border-gray-600">U.S. Air Force: The AvORM/TEM Framework</h2>
+                 <p class="text-center text-gray-700 dark:text-gray-300 max-w-4xl mx-auto mb-6">The Air Force's approach is an aviation-specific, skills-based program combining <b>Crew Resource Management (CRM)</b> with <b>Threat and Error Management (TEM)</b>. The AMC-specific implementation, <b>Aviation Operational Risk Management (AvORM)</b>, provides the practical tools for this framework, focusing on equipping crews with the cognitive skills to manage a dynamic environment.</p>
+                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center my-8">
+                    <div class="p-4 rounded-lg bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800"><h4 class="font-bold text-blue-800 dark:text-blue-300 text-lg">Threats</h4><p class="text-sm text-gray-600 dark:text-gray-400 mt-2">External factors increasing complexity (e.g., weather, complex airspace). The crew must actively <b>PREPARE</b> for them.</p></div>
+                    <div class="p-4 rounded-lg bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800"><h4 class="font-bold text-green-800 dark:text-green-300 text-lg">Errors</h4><p class="text-sm text-gray-600 dark:text-gray-400 mt-2">Crew actions that deviate from expectations (e.g., checklist error, wrong altitude). The crew must <b>REPAIR</b> them.</p></div>
+                    <div class="p-4 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800"><h4 class="font-bold text-red-800 dark:text-red-300 text-lg">Undesired State</h4><p class="text-sm text-gray-600 dark:text-gray-400 mt-2">A safety-compromising situation resulting from unmanaged threats or errors (e.g., unstable approach). The crew must <b>RECOVER</b>.</p></div>
+                </div>
+            </section>
+            
+            <!-- Comparison -->
+            <section id="comparison" class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 md:p-8">
+                 <h2 class="text-3xl font-bold text-center text-[#0d3b66] dark:text-sky-300 mb-6 border-b pb-4 dark:border-gray-600">Training Translation: A Head-to-Head Comparison</h2>
+                 <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead><tr class="border-b dark:border-gray-600"><th class="p-3">Aspect</th><th class="p-3">U.S. Coast Guard (GAR 2.0)</th><th class="p-3">U.S. Air Force (AvORM/TEM)</th></tr></thead>
+                        <tbody>
+                            <tr class="border-b dark:border-gray-600 bg-slate-50 dark:bg-gray-800/50"><td class="p-3 font-semibold">Philosophy</td><td class="p-3"><b>Process-Oriented:</b> A universal, repeatable 5-step process for all operations. "Here is the process to follow."</td><td class="p-3"><b>Skills-Oriented:</b> A specialized set of 6 core skills for aircrews to manage their environment. "Here are the skills to master."</td></tr>
+                            <tr class="border-b dark:border-gray-600"><td class="p-3 font-semibold">Core Model</td><td class="p-3"><b>PEACE/STAAR Models:</b> Mnemonics for systematically identifying hazards and selecting controls.</td><td class="p-3"><b>Threat & Error Management (TEM):</b> A dynamic model of preparing for threats, repairing errors, and recovering from undesired states.</td></tr>
+                            <tr class="border-b dark:border-gray-600 bg-slate-50 dark:bg-gray-800/50"><td class="p-3 font-semibold">Assessment Focus</td><td class="p-3"><b>Condition & Gain:</b> Assesses the current state of mission factors ("what now?") and weighs the risk against the potential reward.</td><td class="p-3"><b>Probability & Severity:</b> Analyzes the likelihood of a potential hazard ("what if?") and the severity of its outcome.</td></tr>
+                             <tr class="border-b dark:border-gray-600"><td class="p-3 font-semibold">Training Goal</td><td class="p-3">To instill a universal risk management framework, creating a shared mental model and common language of risk across the entire service.</td><td class="p-3">To develop aircrew proficiency in specific human factors skills that enable proactive identification and mitigation of threats and errors inherent to aviation.</td></tr>
+                        </tbody>
+                    </table>
+                 </div>
+            </section>
+
+            <!-- Scenario Lab -->
+            <section id="scenario-lab" class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 md:p-8">
+                <h2 class="text-3xl font-bold text-[#0d3b66] dark:text-sky-300 mb-4 text-center border-b pb-4 dark:border-gray-600">Dynamic Scenario Lab</h2>
+                <p class="text-center text-gray-700 dark:text-gray-300 mb-6 max-w-3xl mx-auto">Select a preset scenario or adjust the parameters manually. See how each service's model assesses the risk in real-time. Note the instructional text that appears explaining the rationale.</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                    <div class="md:col-span-1"><label class="font-semibold">Preset Scenarios:</label></div>
+                    <div class="md:col-span-2"><select id="scenario-presets" class="w-full p-2 border rounded dark:bg-gray-900 dark:border-gray-600"><option value="custom">Custom Scenario</option><option value="routine">Routine Training Flight</option><option value="night-sar">Night SAR (High Gain, Medium Risk)</option><option value="complex-awacs">Complex AWACS Sortie (Medium Risk)</option><option value="bad-wx-logistics">Bad Weather Logistics (High Risk, Low Gain)</option></select></div>
+                </div>
+                <div id="scenario-explanation" class="mb-6 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg hidden"></div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div id="uscg-scenario-builder" class="space-y-4"><h3 class="text-2xl font-semibold text-[#1a5b8a] dark:text-sky-400 text-center mb-4">USCG GAR 2.0 Scenario</h3><div id="uscg-inputs"></div><div class="bg-slate-50 dark:bg-gray-700/50 p-6 rounded-lg border dark:border-gray-600 mt-4"><h4 class="text-xl font-semibold text-center text-[#1a5b8a] dark:text-sky-400 mb-4">GAR 2.0 Assessment</h4><div class="flex justify-around items-center"><div class="text-center"><p class="font-semibold">Overall Risk:</p><p id="uscg-risk-level" class="text-2xl font-bold mt-1">--</p></div><div class="text-center"><p class="font-semibold">Action:</p><p id="uscg-action" class="text-lg font-bold mt-1">--</p></div></div></div></div>
+                    <div id="usaf-scenario-builder" class="space-y-4"><h3 class="text-2xl font-semibold text-[#1a5b8a] dark:text-sky-400 text-center mb-4">USAF AvORM Scenario</h3><div id="usaf-inputs"></div><div class="bg-slate-50 dark:bg-gray-700/50 p-6 rounded-lg border dark:border-gray-600 mt-4"><h4 class="text-xl font-semibold text-center text-[#1a5b8a] dark:text-sky-400 mb-4">AvORM Assessment</h4><div class="flex justify-around items-center"><div class="text-center"><p class="font-semibold">Total Score:</p><p id="usaf-total-score" class="text-2xl font-bold mt-1">0</p></div><div class="text-center"><p class="font-semibold">Risk Level:</p><p id="usaf-risk-level" class="text-lg font-bold mt-1">--</p></div></div></div></div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const uscgInputsContainer = document.getElementById('uscg-inputs');
+        const usafInputsContainer = document.getElementById('usaf-inputs');
+        const presets = document.getElementById('scenario-presets');
+        const scenarioExplanation = document.getElementById('scenario-explanation');
+        
+        const uscgRiskFactors = [ { id: 'planning', label: 'Planning', levels: ['Complete', 'Partial', 'None'] }, { id: 'event', label: 'Event Complexity', levels: ['Low', 'Moderate', 'Extreme'] }, { id: 'pilots', label: 'Asset - Pilots', levels: ['Excellent', 'Marginal', 'Poor'] }, { id: 'aircrew', label: 'Asset - Aircrew', levels: ['Excellent', 'Marginal', 'Poor'] }, { id: 'airframe', label: 'Asset - Airframe', levels: ['Ideal', 'Restrictions', 'Limitations'] }, { id: 'environment', label: 'Environment', levels: ['Ideal', 'Marginal', 'Extreme'] } ];
+        const uscgMissionGain = { id: 'gain', label: 'Mission Gain', levels: ['Low', 'Medium', 'High'] };
+        const usafRiskFactors = [ { id: 'showTime', label: 'Home Station Show Time', options: {'0631-1400L': 0, '1401-2000L': 1, '2001-0630L': 2} }, { id: 'airfieldComplexity', label: 'Airfield Complexity', options: {'Routine': 0, 'Challenging': 1, 'Difficult': 2, 'Hazardous': 3} }, { id: 'crewQual', label: 'Crew Qualification', options: {'Fully Qualified': 0, 'Upgrade Training': 1} }, { id: 'fatigue', label: 'Fatigue Score', options: {'Low': 0, 'Moderate': 1, 'High': 2, 'Severe': 3} } ];
+        const scenarios = {
+            custom: { uscg: [0,0,0,0,0,0,1], usaf: [0,0,0,0], explanation: "Adjust the sliders and dropdowns below to create a custom mission profile and see how the risk models respond." },
+            routine: { uscg: [0,0,0,0,0,0,1], usaf: [0,0,0,0], explanation: "<b>Routine Training:</b> Both models assess this as low risk. All factors are ideal, from planning to crew and environment. This is the baseline against which all other risks are measured." },
+            'night-sar': { uscg: [1,1,1,0,0,1,2], usaf: [2,2,0,1], explanation: "<b>Night SAR:</b> A high-gain, medium-risk mission. GAR 2.0 flags medium risk from Partial Planning, Moderate Event Complexity (night SAR), Marginal Pilots, and Marginal Environment. AvORM scores high on late Show Time and Difficult Airfield (unprepared site), creating a Moderate total risk." },
+            'complex-awacs': { uscg: [0,1,0,0,1,1,1], usaf: [1,2,0,1], explanation: "<b>Complex AWACS Sortie:</b> A medium-risk mission with medium gain. GAR 2.0 sees risk in Event Complexity, Airframe Restrictions, and Marginal Environment. AvORM flags a late show time and difficult airspace/operations." },
+            'bad-wx-logistics': { uscg: [2,2,1,1,1,2,0], usaf: [1,3,1,2], explanation: "<b>Bad Weather Logistics:</b> A high-risk, low-gain mission that pushes decision boundaries. GAR 2.0 scores High on Planning (pop-up mission) and Extreme on Environment. This creates a High overall risk, which when weighed against Low gain, results in a 'DO NOT ACCEPT' recommendation. AvORM scores Severe on Hazardous Airfield conditions and High on crew fatigue, pushing the total score into the HIGH/SEVERE category." }
+        };
+
+        function createUscgInputs() {
+            let html = '';
+            uscgRiskFactors.forEach(factor => { html += `<div class="p-2 border dark:border-gray-600 rounded"><label for="${factor.id}" class="font-semibold block mb-1">${factor.label}</label><div class="flex items-center"><span class="text-xs text-green-600 dark:text-green-400">Low</span><input type="range" id="${factor.id}" name="${factor.id}" min="0" max="2" value="0" class="w-full mx-2 h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer uscg-slider"><span class="text-xs text-red-600 dark:text-red-400">High</span></div><p class="text-center text-sm font-medium mt-1" id="${factor.id}-label">${factor.levels[0]}</p></div>`; });
+            html += `<div class="p-2 border dark:border-gray-600 rounded mt-4"><label for="${uscgMissionGain.id}" class="font-semibold block mb-1">${uscgMissionGain.label}</label><select id="${uscgMissionGain.id}" class="w-full p-2 border dark:border-gray-600 rounded dark:bg-gray-900 uscg-gain"><option value="0">${uscgMissionGain.levels[0]}</option><option value="1">${uscgMissionGain.levels[1]}</option><option value="2">${uscgMissionGain.levels[2]}</option></select></div>`;
+            uscgInputsContainer.innerHTML = html;
+        }
+
+        function createUsafInputs() {
+            let html = '';
+            usafRiskFactors.forEach(factor => {
+                html += `<div class="p-2"><label for="${factor.id}" class="font-semibold block mb-1">${factor.label}</label><select id="${factor.id}" class="w-full p-2 border dark:border-gray-600 rounded dark:bg-gray-900 usaf-select">`;
+                Object.entries(factor.options).forEach(([text, value]) => { html += `<option value="${value}">${text}</option>`; });
+                html += `</select></div>`;
+            });
+            usafInputsContainer.innerHTML = html;
+        }
+
+        function updateUscgScenario() {
+            let yellowCount = 0, redCount = 0;
+            uscgRiskFactors.forEach(factor => {
+                const slider = document.getElementById(factor.id); const value = parseInt(slider.value);
+                const label = document.getElementById(`${factor.id}-label`);
+                label.textContent = factor.levels[value];
+                if (value === 1) { yellowCount++; label.className = "text-center text-sm font-medium mt-1 text-yellow-600 dark:text-yellow-400"; } 
+                else if (value === 2) { redCount++; label.className = "text-center text-sm font-medium mt-1 text-red-600 dark:text-red-400"; }
+                else { label.className = "text-center text-sm font-medium mt-1 text-green-600 dark:text-green-400"; }
+            });
+
+            const effectiveRedCount = redCount + Math.floor(yellowCount / 2);
+            let riskLevel = 'LOW', riskColor = 'text-green-800 dark:text-green-300', bgColor = 'bg-green-100 dark:bg-green-900/20';
+            if (effectiveRedCount > 1) { riskLevel = 'HIGH'; riskColor = 'text-white'; bgColor = 'bg-red-500'; } 
+            else if (effectiveRedCount === 1) { riskLevel = 'MEDIUM'; riskColor = 'text-yellow-800 dark:text-yellow-300'; bgColor = 'bg-yellow-100 dark:bg-yellow-900/20'; }
+            
+            const riskLevelEl = document.getElementById('uscg-risk-level');
+            riskLevelEl.textContent = riskLevel; riskLevelEl.className = `text-2xl font-bold mt-1 ${riskColor}`;
+            riskLevelEl.parentElement.parentElement.className = `p-4 rounded-lg ${bgColor}`;
+
+            const gainValue = parseInt(document.getElementById('gain').value);
+            let actionText = '';
+            if (riskLevel === 'LOW') actionText = 'Accept Mission';
+            else if (riskLevel === 'MEDIUM') { actionText = gainValue >= 1 ? 'Accept w/ Controls' : 'Endorsement'; }
+            else if (riskLevel === 'HIGH') { actionText = gainValue > 0 ? 'Endorsement' : 'DO NOT ACCEPT'; }
+            document.getElementById('uscg-action').textContent = actionText;
+        }
+
+        function updateUsafScenario() {
+            let totalScore = 0;
+            document.querySelectorAll('.usaf-select').forEach(s => totalScore += parseInt(s.value));
+            document.getElementById('usaf-total-score').textContent = totalScore;
+            
+            let riskLevel = '', riskColor = '', bgColor = '';
+            if (totalScore <= 6) { riskLevel = 'LOW'; riskColor = 'text-green-800 dark:text-green-300'; bgColor = 'bg-green-100 dark:bg-green-900/20'; }
+            else if (totalScore <= 13) { riskLevel = 'MODERATE'; riskColor = 'text-yellow-800 dark:text-yellow-300'; bgColor = 'bg-yellow-100 dark:bg-yellow-900/20'; }
+            else if (totalScore <= 20) { riskLevel = 'HIGH'; riskColor = 'text-orange-800 dark:text-orange-300'; bgColor = 'bg-orange-100 dark:bg-orange-900/20'; }
+            else { riskLevel = 'SEVERE'; riskColor = 'text-white'; bgColor = 'bg-red-500'; }
+
+            const riskLevelEl = document.getElementById('usaf-risk-level');
+            riskLevelEl.textContent = riskLevel; riskLevelEl.className = `text-lg font-bold mt-1 ${riskColor}`;
+            riskLevelEl.parentElement.parentElement.className = `p-4 rounded-lg ${bgColor}`;
+        }
+
+        function setScenario(scenarioKey) {
+            const scenario = scenarios[scenarioKey];
+            scenarioExplanation.innerHTML = scenario.explanation;
+            scenarioExplanation.classList.remove('hidden');
+
+            uscgRiskFactors.forEach((factor, index) => { document.getElementById(factor.id).value = scenario.uscg[index]; });
+            document.getElementById('gain').value = scenario.uscg[6];
+            usafRiskFactors.forEach((factor, index) => { document.getElementById(factor.id).value = scenario.usaf[index]; });
+            updateUscgScenario();
+            updateUsafScenario();
+        }
+
+        presets.addEventListener('change', (e) => setScenario(e.target.value));
+        uscgInputsContainer.addEventListener('input', () => { presets.value = 'custom'; scenarioExplanation.classList.add('hidden'); updateUscgScenario(); });
+        usafInputsContainer.addEventListener('input', () => { presets.value = 'custom'; scenarioExplanation.classList.add('hidden'); updateUsafScenario(); });
+        
+        createUscgInputs(); createUsafInputs();
+        setScenario('routine');
+
+        // RAM Interactive Worksheet Logic
+        const ramMatrix = [ [1,1,1,2,3], [1,1,2,3,3], [2,2,3,4,4], [3,3,4,4,4] ];
+        const racColors = { 1: 'bg-red-500 text-white', 2: 'bg-orange-400 text-gray-900', 3: 'bg-yellow-400 text-gray-900', 4: 'bg-green-400 text-gray-900' };
+
+        const initialSeverity = document.getElementById('initial-severity');
+        const initialProbability = document.getElementById('initial-probability');
+        const initialRacEl = document.getElementById('initial-rac');
+        const mitigatedSeverity = document.getElementById('mitigated-severity');
+        const mitigatedProbability = document.getElementById('mitigated-probability');
+        const mitigatedRacEl = document.getElementById('mitigated-rac');
+        const hazardInputs = document.querySelectorAll('#hazard-task, #hazard-what-can-go-wrong, #hazard-why, #initial-severity, #initial-probability, #hazard-mitigations, #mitigated-severity, #mitigated-probability');
+
+        function updateRAC() {
+            const initialSevVal = parseInt(initialSeverity.value);
+            const initialProbVal = parseInt(initialProbability.value);
+            const initialRac = ramMatrix[initialSevVal][initialProbVal];
+            initialRacEl.textContent = initialRac;
+            initialRacEl.parentElement.className = `font-semibold h-full flex items-center justify-center p-2 rounded border dark:border-gray-600 ${racColors[initialRac]}`;
+            initialRacEl.className = `text-2xl font-bold`;
+
+            const mitigatedSevVal = parseInt(mitigatedSeverity.value);
+            const mitigatedProbVal = parseInt(mitigatedProbability.value);
+            const mitigatedRac = ramMatrix[mitigatedSevVal][mitigatedProbVal];
+            mitigatedRacEl.textContent = mitigatedRac;
+            mitigatedRacEl.parentElement.className = `font-semibold h-full flex items-center justify-center p-2 rounded border dark:border-gray-600 ${racColors[mitigatedRac]}`;
+            mitigatedRacEl.className = `text-2xl font-bold`;
+        }
+        
+        hazardInputs.forEach(el => el.addEventListener('input', updateRAC));
+        updateRAC();
+
+        // Theme Toggle
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const darkIcon = document.getElementById('theme-toggle-dark-icon');
+        const lightIcon = document.getElementById('theme-toggle-light-icon');
+
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            lightIcon.classList.remove('hidden');
+            document.documentElement.classList.add('dark');
+        } else {
+            darkIcon.classList.remove('hidden');
+            document.documentElement.classList.remove('dark');
+        }
+
+        themeToggleBtn.addEventListener('click', function() {
+            darkIcon.classList.toggle('hidden');
+            lightIcon.classList.toggle('hidden');
+            if (localStorage.getItem('color-theme')) {
+                if (localStorage.getItem('color-theme') === 'light') {
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('color-theme', 'dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('color-theme', 'light');
+                }
+            } else {
+                if (document.documentElement.classList.contains('dark')) {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('color-theme', 'light');
+                } else {
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('color-theme', 'dark');
+                }
+            }
+        });
+    });
+    </script>
+</body>
+</html>
+
