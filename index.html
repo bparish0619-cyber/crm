@@ -257,15 +257,15 @@
         const presets = document.getElementById('scenario-presets');
         const scenarioExplanation = document.getElementById('scenario-explanation');
         
-        const uscgRiskFactors = [ { id: 'planning', label: 'Planning', levels: ['Complete', 'Partial', 'None'] }, { id: 'event', label: 'Event Complexity', levels: ['Low', 'Moderate', 'Extreme'] }, { id: 'pilots', label: 'Asset - Pilots', levels: ['Excellent', 'Marginal', 'Poor'] }, { id: 'aircrew', label: 'Asset - Aircrew', levels: ['Excellent', 'Marginal', 'Poor'] }, { id: 'airframe', label: 'Asset - Airframe', levels: ['Ideal', 'Restrictions', 'Limitations'] }, { id: 'environment', label: 'Environment', levels: ['Ideal', 'Marginal', 'Extreme'] } ];
+        const uscgRiskFactors = [ { id: 'planning', label: 'Planning', levels: ['Complete', 'Partial', 'None'] }, { id: 'event', label: 'Event Complexity', levels: ['Low', 'Moderate', 'Extreme'] }, { id: 'pilots', label: 'Asset - Pilots', levels: ['Excellent', 'Marginal', 'Poor'] }, { id: 'aircrew', label: 'Asset - Aircrew', levels: ['Ideal', 'Restrictions', 'Limitations'] }, { id: 'airframe', label: 'Asset - Airframe', levels: ['Excellent', 'Partial', 'None'] }, { id: 'communications', label: 'Communications/Supervision', levels: ['Ideal', 'Marginal', 'Extreme'] }, { id: 'environment', label: 'Environment', levels: ['Ideal', 'Marginal', 'Extreme'] } ];
         const uscgMissionGain = { id: 'gain', label: 'Mission Gain', levels: ['Low', 'Medium', 'High'] };
         const usafRiskFactors = [ { id: 'showTime', label: 'Home Station Show Time', options: {'0631-1400L': 0, '1401-2000L': 1, '2001-0630L': 2} }, { id: 'airfieldComplexity', label: 'Airfield Complexity', options: {'Routine': 0, 'Challenging': 1, 'Difficult': 2, 'Hazardous': 3} }, { id: 'crewQual', label: 'Crew Qualification', options: {'Fully Qualified': 0, 'Upgrade Training': 1} }, { id: 'fatigue', label: 'Fatigue Score', options: {'Low': 0, 'Moderate': 1, 'High': 2, 'Severe': 3} } ];
         const scenarios = {
-            custom: { uscg: [0,0,0,0,0,0,1], usaf: [0,0,0,0], explanation: "Adjust the sliders and dropdowns below to create a custom mission profile and see how the risk models respond." },
-            routine: { uscg: [0,0,0,0,0,0,1], usaf: [0,0,0,0], explanation: "<b>Routine Training:</b> Both models assess this as low risk. All factors are ideal, from planning to crew and environment. This is the baseline against which all other risks are measured." },
-            'night-sar': { uscg: [1,1,1,0,0,1,2], usaf: [2,2,0,1], explanation: "<b>Night SAR:</b> A high-gain, medium-risk mission. GAR 2.0 flags medium risk from Partial Planning, Moderate Event Complexity (night SAR), Marginal Pilots, and Marginal Environment. AvORM scores high on late Show Time and Difficult Airfield (unprepared site), creating a Moderate total risk." },
-            'complex-awacs': { uscg: [0,1,0,0,1,1,1], usaf: [1,2,0,1], explanation: "<b>Complex AWACS Sortie:</b> A medium-risk mission with medium gain. GAR 2.0 sees risk in Event Complexity, Airframe Restrictions, and Marginal Environment. AvORM flags a late show time and difficult airspace/operations." },
-            'bad-wx-logistics': { uscg: [2,2,1,1,1,2,0], usaf: [1,3,1,2], explanation: "<b>Bad Weather Logistics:</b> A high-risk, low-gain mission that pushes decision boundaries. GAR 2.0 scores High on Planning (pop-up mission) and Extreme on Environment. This creates a High overall risk, which when weighed against Low gain, results in a 'DO NOT ACCEPT' recommendation. AvORM scores Severe on Hazardous Airfield conditions and High on crew fatigue, pushing the total score into the HIGH/SEVERE category." }
+            custom: { uscg: [0,0,0,0,0,0,0,1], usaf: [0,0,0,0], explanation: "Adjust the sliders and dropdowns below to create a custom mission profile and see how the risk models respond." },
+            routine: { uscg: [0,0,0,0,0,0,0,1], usaf: [0,0,0,0], explanation: "<b>Routine Training:</b> Both models assess this as low risk. All factors are ideal, from planning to crew and environment. This is the baseline against which all other risks are measured." },
+            'night-sar': { uscg: [1,1,1,0,0,1,1,2], usaf: [2,2,0,1], explanation: "<b>Night SAR Analysis:</b> This is a high-gain, medium-risk mission.<br><b>USCG GAR 2.0:</b> Scores 'Partial' or 'Marginal' (Yellow) on multiple factors: 1) Planning (intel is still developing), 2) Event Complexity (night SAR is inherently complex), 3) Pilots (a less experienced pilot may be on board), 4) Communications (potential for spotty comms on scene), and 5) Environment (darkness, sea state). These yellow scores accumulate to push the overall risk to MEDIUM. Since the Gain is HIGH (Saving Human Life), the action is 'Accept w/ Controls'.<br><b>USAF AvORM:</b> Scores points for the late Show Time (circadian rhythm disruption) and Challenging/Difficult Airfield (unprepared hoist site at sea), resulting in a MODERATE total risk score." },
+            'complex-awacs': { uscg: [0,1,0,0,1,1,1,1], usaf: [1,2,0,1], explanation: "<b>Complex AWACS Sortie Analysis:</b> A medium-gain, medium-risk mission.<br><b>USCG GAR 2.0:</b> Scores 'Moderate'/'Marginal' (Yellow) for 1) Event Complexity (multi-agency coordination), 2) Airframe (a non-critical system may be MEL'd), 3) Communications (multiple agencies on different frequencies), and 4) Environment (congested airspace). This results in a MEDIUM overall risk. Since the Gain is MEDIUM (Defense Readiness), the action is 'Accept w/ Controls'.<br><b>USAF AvORM:</b> Scores points for the afternoon/evening Show Time and the Challenging Airfield/Airspace Complexity, resulting in a MODERATE risk score." },
+            'bad-wx-logistics': { uscg: [2,2,1,1,1,1,2,0], usaf: [1,3,1,2], explanation: "<b>Bad WX Logistics Analysis:</b> A low-gain, high-risk mission that tests decision-making.<br><b>USCG GAR 2.0:</b> Scores 'None'/'Extreme' (Red) for 1) Planning (a last-minute, pop-up mission) and 2) Environment (thunderstorms, low visibility). Multiple other factors are Yellow. This combination results in a HIGH overall risk. Weighed against the LOW gain (non-urgent logistics), the clear decision is 'DO NOT ACCEPT'.<br><b>USAF AvORM:</b> Scores maximum points for Hazardous Airfield conditions (weather) and a high score for crew fatigue (due to weather avoidance/rerouting), pushing the total score into the HIGH or SEVERE category." }
         };
 
         function createUscgInputs() {
@@ -335,7 +335,7 @@
             scenarioExplanation.classList.remove('hidden');
 
             uscgRiskFactors.forEach((factor, index) => { document.getElementById(factor.id).value = scenario.uscg[index]; });
-            document.getElementById('gain').value = scenario.uscg[6];
+            document.getElementById('gain').value = scenario.uscg[uscgRiskFactors.length];
             usafRiskFactors.forEach((factor, index) => { document.getElementById(factor.id).value = scenario.usaf[index]; });
             updateUscgScenario();
             updateUsafScenario();
@@ -348,10 +348,8 @@
         createUscgInputs(); createUsafInputs();
         setScenario('routine');
 
-        // RAM Interactive Worksheet Logic
         const ramMatrix = [ [1,1,1,2,3], [1,1,2,3,3], [2,2,3,4,4], [3,3,4,4,4] ];
         const racColors = { 1: 'bg-red-500 text-white', 2: 'bg-orange-400 text-gray-900', 3: 'bg-yellow-400 text-gray-900', 4: 'bg-green-400 text-gray-900' };
-
         const initialSeverity = document.getElementById('initial-severity');
         const initialProbability = document.getElementById('initial-probability');
         const initialRacEl = document.getElementById('initial-rac');
@@ -379,11 +377,9 @@
         hazardInputs.forEach(el => el.addEventListener('input', updateRAC));
         updateRAC();
 
-        // Theme Toggle
         const themeToggleBtn = document.getElementById('theme-toggle');
         const darkIcon = document.getElementById('theme-toggle-dark-icon');
         const lightIcon = document.getElementById('theme-toggle-light-icon');
-
         if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             lightIcon.classList.remove('hidden');
             document.documentElement.classList.add('dark');
@@ -391,30 +387,18 @@
             darkIcon.classList.remove('hidden');
             document.documentElement.classList.remove('dark');
         }
-
         themeToggleBtn.addEventListener('click', function() {
             darkIcon.classList.toggle('hidden');
             lightIcon.classList.toggle('hidden');
             if (localStorage.getItem('color-theme')) {
-                if (localStorage.getItem('color-theme') === 'light') {
-                    document.documentElement.classList.add('dark');
-                    localStorage.setItem('color-theme', 'dark');
-                } else {
-                    document.documentElement.classList.remove('dark');
-                    localStorage.setItem('color-theme', 'light');
-                }
+                if (localStorage.getItem('color-theme') === 'light') { document.documentElement.classList.add('dark'); localStorage.setItem('color-theme', 'dark'); }
+                else { document.documentElement.classList.remove('dark'); localStorage.setItem('color-theme', 'light'); }
             } else {
-                if (document.documentElement.classList.contains('dark')) {
-                    document.documentElement.classList.remove('dark');
-                    localStorage.setItem('color-theme', 'light');
-                } else {
-                    document.documentElement.classList.add('dark');
-                    localStorage.setItem('color-theme', 'dark');
-                }
+                if (document.documentElement.classList.contains('dark')) { document.documentElement.classList.remove('dark'); localStorage.setItem('color-theme', 'light'); }
+                else { document.documentElement.classList.add('dark'); localStorage.setItem('color-theme', 'dark'); }
             }
         });
     });
     </script>
 </body>
 </html>
-
